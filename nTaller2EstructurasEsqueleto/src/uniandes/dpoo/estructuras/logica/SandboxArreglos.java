@@ -2,6 +2,7 @@ package uniandes.dpoo.estructuras.logica;
 
 import java.util.HashMap;
 
+
 /**
  * Esta clase tiene un conjunto de métodos para practicar operaciones sobre arreglos de enteros y de cadenas.
  *
@@ -194,20 +195,21 @@ public class SandboxArreglos
      */
     public void eliminarEnteroPorPosicion( int posicion )
     {
-        int[] nuevo_arreglo = new int[arregloEnteros.length - 1];
-        int i = 0;
-        while (i < posicion) {
-            nuevo_arreglo[i] = arregloEnteros[i];
-            i++;
-        }
+    int[] nuevo_arreglo = new int[arregloEnteros.length - 1];
+    int i = 0;
+    // Copiar los elementos del arreglo original al nuevo arreglo hasta llegar a la posición 'posicion'
+    while (i < posicion) {
+        nuevo_arreglo[i] = arregloEnteros[i];
         i++;
-        while (i < arregloEnteros.length) {
-            nuevo_arreglo[i] = arregloEnteros[i];
-            i++;
-            
-        }
-        arregloEnteros = nuevo_arreglo;
     }
+    i++; // Omitir el elemento en la posición 'posicion'
+    // Continuar copiando los elementos restantes del arreglo original al nuevo arreglo
+    while (i < arregloEnteros.length) {
+        nuevo_arreglo[i - 1] = arregloEnteros[i];
+        i++;
+    }
+    arregloEnteros = nuevo_arreglo; // Actualizar el arreglo original con el nuevo arreglo
+	}
 
     /**
      * Reinicia el arreglo de enteros con los valores contenidos en el arreglo del parámetro 'valores' truncados.
@@ -271,7 +273,6 @@ public class SandboxArreglos
             intercambio = false;
             for (int i = 1; i < n; i++) {
                 if (arregloEnteros[i - 1] > arregloEnteros[i]) {
-                    // Intercambiar los elementos
                     int temp = arregloEnteros[i - 1];
                     arregloEnteros[i - 1] = arregloEnteros[i];
                     arregloEnteros[i] = temp;
@@ -372,23 +373,23 @@ public class SandboxArreglos
      */
     public int[] calcularRangoEnteros( )
     {
-    	if (arregloEnteros.length == 0) {
-            return null; 
-        }
-    	
-    	int minimo = 9999;
-        int maximo = 0;
-        
-    	for (int num : arregloEnteros) {
-            if (num < minimo) {
-                minimo = num;
-            }
-            if (num > maximo) {
-                maximo = num;
-            }
-        }
+    if (arregloEnteros.length == 0) {
+        return new int[0]; 
+    }
 
-        return new int[]{minimo, maximo};
+    int min = Integer.MAX_VALUE; 
+    int max = Integer.MIN_VALUE; 
+
+    for (int num : arregloEnteros) {
+        if (num < min) {
+            min = num; 
+        }
+        if (num > max) {
+            max = num; 
+        }
+    }
+
+    return new int[]{min, max};
     }
 
     /**
@@ -465,20 +466,30 @@ public class SandboxArreglos
      */
     public boolean mismosEnteros( int[] otroArreglo )
     {
-    if (arregloEnteros.length != otroArreglo.length) {
-        return false;
-    }
-
-    int[] conteoArregloEnteros = contarOcurrencias(arregloEnteros);
-    int[] conteoOtroArreglo = contarOcurrencias(otroArreglo);
-
-    for (int i = 0; i < conteoArregloEnteros.length; i++) {
-        if (conteoArregloEnteros[i] != conteoOtroArreglo[i]) {
+        if (otroArreglo.length != arregloEnteros.length) {
             return false;
         }
+
+        HashMap<Integer, Integer> frecuencia = new HashMap<>();
+        for (int num : arregloEnteros) {
+            frecuencia.put(num, frecuencia.getOrDefault(num, 0) + 1);
+        }
+
+        for (int num : otroArreglo) {
+            if (!frecuencia.containsKey(num)) {
+                return false; // El elemento del segundo arreglo no está presente en el primer arreglo
+            }
+            // Decrementar el contador de frecuencia para el elemento
+            frecuencia.put(num, frecuencia.get(num) - 1);
+            if (frecuencia.get(num) == 0) {
+                frecuencia.remove(num); // Eliminar la entrada si el contador llega a cero
+            }
+        }
+
+        // Si no quedan elementos en el contador de frecuencia, los arreglos tienen los mismos elementos
+        return frecuencia.isEmpty();
     }
-    return true;
-    }
+
 
     private int[] contarOcurrencias(int[] arreglo) {
     int maxValor = Integer.MIN_VALUE;
