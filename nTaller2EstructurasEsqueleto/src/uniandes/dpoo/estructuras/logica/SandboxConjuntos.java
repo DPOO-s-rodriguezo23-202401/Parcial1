@@ -40,11 +40,11 @@ public class SandboxConjuntos
      */
     public List<String> getCadenasComoLista( )
     {
-    	List<String> lista = new ArrayList<>();
-    	for (String cadena : arbolCadenas) {
-        lista.add(cadena);
-        }
-         return lista;
+        TreeSet<String> conjuntoOrdenado = new TreeSet<>(arbolCadenas);
+        
+        List<String> listaOrdenada = new ArrayList<>(conjuntoOrdenado);
+        
+        return listaOrdenada;
     }    
 
     /**

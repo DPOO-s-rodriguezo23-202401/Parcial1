@@ -52,14 +52,15 @@ public class SandboxListas
      * Retorna una copia de la lista de cadenas, es decir una nueva lista del mismo tamaño que contiene copias de los valores de la lista original
      * @return Una copia de la lista de cadenas
      */
-    public List<Integer> getCopiaCadenas( )
+    public List<String> getCopiaCadenas( )
     {
-    	List<Integer> finall = new ArrayList<>(); 
-        for (Integer dato : listaEnteros) { 
-            finall.add(dato); 
+        List<String> copiaCadenas = new ArrayList<>();
+
+        for (String cadena : listaCadenas) {
+            copiaCadenas.add(cadena);
         }
-        
-        return finall; 
+
+        return copiaCadenas;
     }
 
     /**
@@ -284,21 +285,27 @@ public class SandboxListas
      */
     public int contarEnterosRepetidos( )
     {
-    	int contador = 0; 
+    int contador = 0;
+    List<Integer> numerosVisitados = new ArrayList<>();
 
-        for (int i = 0; i < listaEnteros.size(); i++) { 
-            int elementoActual = listaEnteros.get(i); 
-            for (int j = i + 1; j < listaEnteros.size(); j++) { 
-                if (listaEnteros.get(j) == elementoActual) {  
-                    contador++; 
-                    break; 
-                }
-            }
+    for (int i = 0; i < listaEnteros.size(); i++) {
+        int numeroActual = listaEnteros.get(i);
+        if (numerosVisitados.contains(numeroActual)) {
+            
+            continue;
         }
 
-        return contador; 
+        
+        for (int j = i + 1; j < listaEnteros.size(); j++) {
+            if (numeroActual == listaEnteros.get(j)) {
+                contador++;
+                break;
+            }
+        }
+        numerosVisitados.add(numeroActual);
     }
-    
+    return contador;
+    }
 
     /**
      * Compara la lista de enteros con un arreglo de enteros y verifica si contienen los mismos elementos exactamente en el mismo orden.

@@ -197,18 +197,16 @@ public class SandboxArreglos
     {
     int[] nuevo_arreglo = new int[arregloEnteros.length - 1];
     int i = 0;
-    // Copiar los elementos del arreglo original al nuevo arreglo hasta llegar a la posición 'posicion'
     while (i < posicion) {
         nuevo_arreglo[i] = arregloEnteros[i];
         i++;
     }
-    i++; // Omitir el elemento en la posición 'posicion'
-    // Continuar copiando los elementos restantes del arreglo original al nuevo arreglo
+    i++; 
     while (i < arregloEnteros.length) {
         nuevo_arreglo[i - 1] = arregloEnteros[i];
         i++;
     }
-    arregloEnteros = nuevo_arreglo; // Actualizar el arreglo original con el nuevo arreglo
+    arregloEnteros = nuevo_arreglo; 
 	}
 
     /**
